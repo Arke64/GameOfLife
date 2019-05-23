@@ -107,31 +107,20 @@ namespace GameOfLife {
 
             var sim = new Simulator(width, height, cells);
 
+            render(sim.GetLiveCells());
+
             var start = DateTime.UtcNow;
             for (var i = 0; i < steps; i++) {
                 sim.Step();
 
-                //var alive = sim.GetLiveCells();
-                //
-                //Console.Clear();
-                //
-                //foreach (var (x, y) in alive) {
-                //    Console.SetCursorPosition(x, y);
-                //    Console.Write((char)0x2588);
-                //}
-                //
+                //render(sim.GetLiveCells());
                 //Thread.Sleep(100);
             }
             var end = DateTime.UtcNow;
 
             var final = sim.GetLiveCells();
 
-            Console.Clear();
-
-            foreach (var (x, y) in final) {
-                Console.SetCursorPosition(x, y);
-                Console.Write((char)0x2588);
-            }
+            render(final);
 
             final.OrderBy(f => f.y).ThenBy(f => f.x).ToList();
 
@@ -139,6 +128,15 @@ namespace GameOfLife {
             Console.WriteLine();
             Console.WriteLine($"Took {(end - start).TotalMilliseconds:N3} ms");
             Console.WriteLine(string.Join(Environment.NewLine, final.Select(f => $"{f.x} {f.y}")));
+
+            void render(List<(int x, int y)> lst) {
+                Console.Clear();
+
+                foreach (var (x, y) in lst) {
+                    Console.SetCursorPosition(x, y);
+                    Console.Write((char)0x2588);
+                }
+            }
         }
     }
 }
