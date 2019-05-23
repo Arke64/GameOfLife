@@ -36,7 +36,6 @@ namespace GameOfLife {
                 this.current.Set(x, y, true);
         }
 
-
         private int GetNeighborCount(int x, int y) {
             var cnt = 0;
 
@@ -112,27 +111,34 @@ namespace GameOfLife {
             for (var i = 0; i < steps; i++) {
                 sim.Step();
 
-                var alive = sim.GetLiveCells();
-
-                Console.Clear();
-
-                foreach (var (x, y) in alive) {
-                    Console.SetCursorPosition(x, y);
-                    Console.Write((char)0x2588);
-                }
-
-                Thread.Sleep(100);
+                //var alive = sim.GetLiveCells();
+                //
+                //Console.Clear();
+                //
+                //foreach (var (x, y) in alive) {
+                //    Console.SetCursorPosition(x, y);
+                //    Console.Write((char)0x2588);
+                //}
+                //
+                //Thread.Sleep(100);
             }
             var end = DateTime.UtcNow;
 
             var final = sim.GetLiveCells();
 
+            Console.Clear();
+
+            foreach (var (x, y) in final) {
+                Console.SetCursorPosition(x, y);
+                Console.Write((char)0x2588);
+            }
+
             final.OrderBy(f => f.y).ThenBy(f => f.x).ToList();
 
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($"{(end - start).TotalSeconds:N3}");
-            //Console.WriteLine(string.Join(Environment.NewLine, final.Select(f => $"{f.x} {f.y}")));
+            Console.WriteLine($"Took {(end - start).TotalMilliseconds:N3} ms");
+            Console.WriteLine(string.Join(Environment.NewLine, final.Select(f => $"{f.x} {f.y}")));
         }
     }
 }
